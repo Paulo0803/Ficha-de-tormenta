@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha de personagem J.A.</title>
+     <link rel="icon" href="./imagens/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-icon">Ficha T20 J.A. 🎲🟣</div>
+        <div class="nav-icon"><img src="./imagens/favicon.ico" alt="Descrição do Ícone" width="40" height="40"></div>
 
         <div class="nav-menu">
             <button class="btn-icon" id="btn-tema" title="Alternar Tema Claro/Escuro">
@@ -77,6 +79,17 @@
                     </div>
                 </div>
             </div>
+        </section>
+
+        <section id="armor" class="painel">
+            <h2>Armaduras e Escudos</h2>
+            <button class="btn-nav" onclick="addArmor()">+</button>
+        </section>
+
+
+        <section id="arma" class="painel">
+            <h2>Armas</h2>
+            <button class="btn-nav" onclick="addArma()">+</button>
         </section>
 
         <section class="painel">

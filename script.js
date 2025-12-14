@@ -20,39 +20,39 @@ const periciasDB = [
 /* --- INICIALIZAÇÃO --- */
 document.addEventListener("DOMContentLoaded", () => {
     gerarPericiasHTML();
-    carregarTemaSalvo(); // Verifica se usuário prefere Dark Mode
+    carregarTemaSalvo();
     
-    // Adiciona listeners para cálculo automático em todos os atributos
     const atributos = ['for', 'des', 'con', 'int', 'sab', 'car'];
     atributos.forEach(attr => {
         document.getElementById(`attr-${attr}`).addEventListener('input', calcularMods);
     });
     
-    calcularMods(); // Cálculo inicial
+    calcularMods();
 });
 
 /* --- TEMA (CLARO/ESCURO) --- */
 const btnTema = document.getElementById('btn-tema');
-const iconTema = btnTema.querySelector('.material-icons');
-
-btnTema.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    
-    // Salva preferência e atualiza ícone
-    if (document.body.classList.contains('dark-mode')) {
-        localStorage.setItem('tema', 'dark');
-        iconTema.innerText = 'light_mode';
-    } else {
-        localStorage.setItem('tema', 'light');
-        iconTema.innerText = 'dark_mode';
-    }
-});
+/* Verifica se o botão existe antes de adicionar listener (evita erros se mudar o HTML) */
+if(btnTema) {
+    const iconTema = btnTema.querySelector('.material-icons');
+    btnTema.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('tema', 'dark');
+            iconTema.innerText = 'light_mode';
+        } else {
+            localStorage.setItem('tema', 'light');
+            iconTema.innerText = 'dark_mode';
+        }
+    });
+}
 
 function carregarTemaSalvo() {
     const temaSalvo = localStorage.getItem('tema');
     if (temaSalvo === 'dark') {
         document.body.classList.add('dark-mode');
-        iconTema.innerText = 'light_mode';
+        const iconTema = document.querySelector('#btn-tema .material-icons');
+        if(iconTema) iconTema.innerText = 'light_mode';
     }
 }
 
@@ -81,8 +81,6 @@ function calcularMods() {
         
         const spanMod = document.getElementById(`mod-${attr}`);
         spanMod.innerText = mod >= 0 ? `+${mod}` : mod;
-        
-        // Cor dinâmica para o modificador
         spanMod.style.color = mod >= 0 ? 'var(--good-numb)' : 'var(--bad-numb)';
     });
     atualizarTodasPericias();
@@ -103,7 +101,7 @@ function atualizarPericia(idPericia, attr) {
     const nivel = parseInt(document.getElementById('nivel').value) || 1;
     
     let bonusTreino = 0;
-    if(checkbox.checked) {
+    if(checkbox && checkbox.checked) {
         if(nivel >= 15) bonusTreino = 6;
         else if(nivel >= 7) bonusTreino = 4;
         else bonusTreino = 2;
@@ -112,19 +110,91 @@ function atualizarPericia(idPericia, attr) {
     const metadeNivel = Math.floor(nivel / 2);
     const total = mod + bonusTreino + metadeNivel;
     
-    spanValor.innerText = total >= 0 ? `+${total}` : total;
-    spanValor.style.opacity = checkbox.checked ? '1' : '0.6';
+    if(spanValor) {
+        spanValor.innerText = total >= 0 ? `+${total}` : total;
+        spanValor.style.opacity = (checkbox && checkbox.checked) ? '1' : '0.6';
+    }
 }
+
+/* --- FUNÇÕES DO SISTEMA DINÂMICO (ARMAS E ARMADURAS) --- */
+let contArmor = 0;
+const armorContainer = document.getElementById('armor');
+
+// Alterado para aceitar valores (para uso no carregamento)
+function addArmor(nomeDesc = "", protecaoVal = ""){
+    contArmor++;
+    const novoDiv = document.createElement('div');
+    novoDiv.classList.add('painel', 'painel-child', 'item-dinamico-armor'); // Classe extra para facilitar busca
+    
+    // Criamos os inputs separadamente para injetar valores se existirem
+    novoDiv.innerHTML = `
+        <label>Armadura/Escudo ${contArmor}: <input type="text" class="input-nome" placeholder="Nome da armadura..."></label>
+        <label>Proteção: <input type="text" class="input-protecao" placeholder="+Defesa"></label>
+        <button onclick="removerCampo(this)" class="btn-nav">-</button>
+    `;
+    
+    // Injeta valores se passados
+    novoDiv.querySelector('.input-nome').value = nomeDesc;
+    novoDiv.querySelector('.input-protecao').value = protecaoVal;
+
+    armorContainer.appendChild(novoDiv);
+}
+
+let contArma = 0;
+const armaContainer = document.getElementById('arma');
+
+// Alterado para aceitar valores
+function addArma(nomeDesc = "", danoVal = ""){
+    contArma++;
+    const novoDiv = document.createElement('div');
+    novoDiv.classList.add('painel', 'painel-child', 'item-dinamico-arma'); // Classe extra
+    
+    novoDiv.innerHTML = `
+        <label>Arma ${contArma}: <input type="text" class="input-nome" placeholder="Nome da arma..."></label>
+        <label>Dano: <input type="text" class="input-dano" placeholder="Ex: 1d8, 2d6..."></label>
+        <button onclick="removerCampo(this)" class="btn-nav">-</button>
+    `;
+
+    // Injeta valores se passados
+    novoDiv.querySelector('.input-nome').value = nomeDesc;
+    novoDiv.querySelector('.input-dano').value = danoVal;
+
+    armaContainer.appendChild(novoDiv);
+}
+
+function removerCampo(botaoRemover) {
+    botaoRemover.parentElement.remove();
+}
+
 
 /* --- SALVAR E CARREGAR --- */
 function salvarFicha() {
-    const inputs = document.querySelectorAll('input, textarea');
     const data = {};
+
+    // 1. Salvar Inputs Estáticos (que têm ID)
+    const inputs = document.querySelectorAll('input[id], textarea[id]');
     inputs.forEach(el => {
         if(el.type === 'file') return;
         data[el.id] = el.type === 'checkbox' ? el.checked : el.value;
     });
+
+    // 2. Salvar Armaduras Dinâmicas
+    data.listaArmaduras = [];
+    document.querySelectorAll('.item-dinamico-armor').forEach(div => {
+        const nome = div.querySelector('.input-nome').value;
+        const protecao = div.querySelector('.input-protecao').value;
+        data.listaArmaduras.push({ nome, protecao });
+    });
+
+    // 3. Salvar Armas Dinâmicas
+    data.listaArmas = [];
+    document.querySelectorAll('.item-dinamico-arma').forEach(div => {
+        const nome = div.querySelector('.input-nome').value;
+        const dano = div.querySelector('.input-dano').value;
+        data.listaArmas.push({ nome, dano });
+    });
     
+    // Download
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -139,22 +209,55 @@ function carregarFicha(input) {
     reader.onload = function(e) {
         try {
             const data = JSON.parse(e.target.result);
+            
+            // 1. Carregar Inputs Estáticos
             for (const key in data) {
+                if(key === 'listaArmaduras' || key === 'listaArmas') continue; // Pula as listas dinâmicas aqui
+                
                 const el = document.getElementById(key);
                 if (el) {
                     if (el.type === 'checkbox') el.checked = data[key];
                     else el.value = data[key];
                 }
             }
+
+            // 2. Carregar Armaduras (Limpar atuais e recriar)
+            limparDinamicos('.item-dinamico-armor');
+            contArmor = 0; // Reseta contador visual
+            if(data.listaArmaduras && Array.isArray(data.listaArmaduras)){
+                data.listaArmaduras.forEach(item => {
+                    addArmor(item.nome, item.protecao);
+                });
+            }
+
+            // 3. Carregar Armas (Limpar atuais e recriar)
+            limparDinamicos('.item-dinamico-arma');
+            contArma = 0; // Reseta contador visual
+            if(data.listaArmas && Array.isArray(data.listaArmas)){
+                data.listaArmas.forEach(item => {
+                    addArma(item.nome, item.dano);
+                });
+            }
+
             calcularMods();
-            alert("Ficha carregada!");
-        } catch(err) { alert("Erro ao ler arquivo."); }
+            alert("Ficha carregada com sucesso!");
+        } catch(err) { 
+            console.error(err);
+            alert("Erro ao ler arquivo ou arquivo inválido."); 
+        }
     };
     reader.readAsText(file);
+    // Limpa o input file para permitir recarregar o mesmo arquivo se necessário
+    input.value = ''; 
+}
+
+function limparDinamicos(selector) {
+    document.querySelectorAll(selector).forEach(el => el.remove());
 }
 
 function limparFicha() {
     if(confirm("Deseja limpar toda a ficha?")) {
+        // Limpa estáticos
         document.querySelectorAll('input').forEach(i => {
             if(i.type !== 'file') {
                 if(i.type === 'number') i.value = i.defaultValue || 0;
@@ -163,6 +266,13 @@ function limparFicha() {
             }
         });
         document.querySelectorAll('textarea').forEach(t => t.value = "");
+        
+        // Limpa dinâmicos
+        limparDinamicos('.item-dinamico-armor');
+        limparDinamicos('.item-dinamico-arma');
+        contArmor = 0;
+        contArma = 0;
+
         calcularMods();
     }
 }
