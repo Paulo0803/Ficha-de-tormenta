@@ -101,12 +101,13 @@ function atualizarPericia(idPericia, attr) {
     const checkbox = document.getElementById(`treino-${idPericia}`);
     const spanValor = document.getElementById(`valor-${idPericia}`);
     const nivel = parseInt(document.getElementById('nivel').value) || 1;
-}
+    
     let bonusTreino = 0;
     if(checkbox.checked) {
         if(nivel >= 15) bonusTreino = 6;
         else if(nivel >= 7) bonusTreino = 4;
         else bonusTreino = 2;
+    }
 
     const metadeNivel = Math.floor(nivel / 2);
     const total = mod + bonusTreino + metadeNivel;
@@ -127,7 +128,7 @@ function salvarFicha() {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `${document.getElementById('nome').value || 'Personagem'}_T20.json`;
+    a.download = `${document.getElementById('n-personagem').value || 'Personagem'}_T20.json`;
     a.click();
 }
 
