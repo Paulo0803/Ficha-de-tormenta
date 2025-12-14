@@ -3,9 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha T20 J.A.</title>
+    <title>Ficha de personagem J.A.</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <h1>Ficha de personagem</h1>
+    <nav class="navbar">
+        <div class="nav-icon">🟣</div>
+
+        <div class="nav-menu">
+            <button class="btn-nav" onclick="limpar-ficha">➕ Nova ficha</button>
+            <button class="btn-nav" onclick="document.getElementById('input-carregar').click()">💽 Carregar Ficha</button>
+            <input type="file" id="input-carregar" class="hidden" accept=".json" onchange="carregarFicha(this)">
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="painel">
+            <h2>Dados Básicos</h2>
+            <div class="info-grid">
+                <div class="input-group"><label>Personagem</label><input type="text" id="n-personagem"></div>
+                <div class="input-group"><label>Jogador</label><input type="text" id="n-jogador"></div>
+                <div class="input-group"><label>Raça</label><input type="text" id="raca"></div>
+                <div class="input-group"><label>Classe</label><input type="text" id="classe"></div>
+                <div class="input-group"><label>Nivel</label><input type="number" id="nivel" value="1" onchange="atualizarTodasPericias()"></div>
+                <div class="input-group"><label>Origem</label><input type="text" id="origem"></div>
+                <div class="input-group"><label>Dinvidade</label><input type="text" id="divindade"></div>
+            </div>
+        </section>
+
+        <section class="painel">
+            <h2>Atributos</h2>
+            <div class="atributos-grid">
+                <div class="atributo-box"><span class="atributo-nome">FOR</span><input type="number" id="attr-for" class="atributo-valor" value="10"><span class="atributo-mod" id="mod-for">0</span></div>
+                <div class="atributo-box"><span class="atributo-nome">DES</span><input type="number" id="attr-des" class="atributo-valor" value="10"><span class="atributo-mod" id="mod-des">0</span></div>
+                <div class="atributo-box"><span class="atributo-nome">CON</span><input type="number" id="attr-con" class="atributo-valor" value="10"><span class="atributo-mod" id="mod-con">0</span></div>
+                <div class="atributo-box"><span class="atributo-nome">INT</span><input type="number" id="attr-int" class="atributo-valor" value="10"><span class="atributo-mod" id="mod-int">0</span></div>
+                <div class="atributo-box"><span class="atributo-nome">SAB</span><input type="number" id="attr-sab" class="atributo-valor" value="10"><span class="atributo-mod" id="mod-sab">0</span></div>
+                <div class="atributo-box"><span class="atributo-nome">CAR</span><input type="number" id="attr-car" class="atributo-valor" value="10"><span class="atributo-mod" id="mod-car">0</span></div>
+            </div>
+        </section>
+
+        <section class="painel">
+            <h2>Status</h2>
+            <div class="status-grid">
+                <div class="status-box">
+                    <h3>Pontos de Vida</h3>
+                    <div class="status-value">
+                        <input type="number" placeholder="Atual" id="pv-atual"><span>/</span><input type="number" placeholder="Total" id="pv-total">
+                    </div>
+                </div>
+                <div class="status-box">
+                    <h3>Pontos de Mana</h3>
+                    <div class="status-value">
+                        <input type="number" placeholder="Atual" id="pm-atual"><span>/</span><input type="number" placeholder="Total" id="pm-total">
+                    </div>
+                </div>
+                <div class="status-box">
+                    <h3>Pontos de Sanidade</h3>
+                    <div class="status-value">
+                        <input type="number" placeholder="Atual" id="ps-atual"><span>/</span><input type="number" placeholder="Total" id="ps-total">
+                    </div>
+                </div>
+                <div class="status-box">
+                    <h3>Defesa</h3>
+                    <div class="status-value">
+                        <input type="number" value="10" id="defesa" class="destaque">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="painel">
+            <h2>Perícias</h2>
+            <div class="pericias-lista" id="pericias-lista">
+                </div>
+        </section>
+
+        <section class="painel">
+            <h2>Habilidaes & Poderes</h2>
+            <textarea placeholder="Anote suas habilidades e poderes de classe aqui..." id="habilidades"></textarea>
+        </section>
+
+        <section class="painel">
+                <h2>Inventário</h2>
+                <textarea id="inventario" placeholder="Equipamentos..."></textarea>
+                <div class="tibares">
+                    <label>T$:</label>
+                    <input type="number" id="tibar" placeholder="Tibares com você">
+                </div>
+            </section>
+    </div>
+
+    <script src="script_result.js"></script>
 </body>
 </html>
