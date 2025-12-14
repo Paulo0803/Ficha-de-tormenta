@@ -15,7 +15,8 @@
             <button class="btn-icon" id="btn-tema" title="Alternar Tema Claro/Escuro">
                 <span class="material-icons">dark_mode</span>
             </button>
-            <button class="btn-nav" onclick="limpar-ficha">➕ Nova ficha</button>
+            <button class="btn-nav" onclick="limparFicha()">➕ Nova ficha</button>
+            <button class="btn-nav" onclick="salvarFicha()">💾 Salvar Ficha (.json)</button>
             <button class="btn-nav" onclick="document.getElementById('input-carregar').click()">💽 Carregar Ficha</button>
             <input type="file" id="input-carregar" class="hidden" accept=".json" onchange="carregarFicha(this)">
         </div>
@@ -31,6 +32,7 @@
                 <div class="input-group"><label>Classe</label><input type="text" id="classe"></div>
                 <div class="input-group"><label>Nivel</label><input type="number" id="nivel" value="1" onchange="atualizarTodasPericias()"></div>
                 <div class="input-group"><label>Origem</label><input type="text" id="origem"></div>
+                <div class="input-group"><label>Experiencia</label><input type="number" id="xp" value="0"></div>
                 <div class="input-group"><label>Dinvidade</label><input type="text" id="divindade"></div>
             </div>
         </section>
@@ -79,7 +81,7 @@
 
         <section class="painel">
             <h2>Perícias</h2>
-            <div class="pericias-lista" id="pericias-lista">
+            <div class="pericias-lista" id="lista-pericias">
                 </div>
         </section>
 
@@ -100,6 +102,6 @@
         </div>
     </div>
 
-    <script src="script_result.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

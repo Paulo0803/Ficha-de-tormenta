@@ -11,6 +11,8 @@
     --nav-bg: #2c3e50;
     --nav-text: #ffffff;
     --shadow: rgba(0,0,0,0.1);
+    --bad-numb: rgb(255, 44, 44);
+    --good-numb: rgb(15, 172, 15);
 }
 
 /* --- Variáveis do Tema Escuro --- */
@@ -26,6 +28,8 @@ body.dark-mode {
     --nav-bg: #000000;
     --nav-text: #e0e0e0;
     --shadow: rgba(0,0,0,0.5);
+    --bad-numb: rgb(255, 0, 0);
+    --good-numb: rgb(48, 223, 48);
 }
 
 /* --- Reset & Base --- */
@@ -114,10 +118,10 @@ label { font-weight: bold; font-size: 0.9rem; color: var(--text-muted); display:
 
 .pericias-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
 .pericia-item {
-    display: flex; align-items: center; padding: 8px;
+    display:flexbox; align-content: center; justify-content: center; padding: 5px;
     background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 4px;
 }
-.pericia-nome { flex-grow: 1; font-size: 0.9rem; margin-left: 10px; }
+.pericia-nome { flex-grow: 1; font-size: 0.9rem; margin-left: 2%; }
 .pericia-bonus { font-weight: bold; color: var(--primary-color); }
 
 .grid-duplo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
