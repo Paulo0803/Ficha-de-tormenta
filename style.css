@@ -1,0 +1,125 @@
+/* --- Variáveis de Cores (Tema Claro Padrão) --- */
+:root {
+    --primary-color: #7f008b;      /* Vermelho T20 */
+    --accent-color: #c52fd3;
+    --bg-body: #f4f4f9;
+    --bg-panel: #ffffff;
+    --bg-input: #ffffff;
+    --text-main: #333333;
+    --text-muted: #666666;
+    --border-color: #cccccc;
+    --nav-bg: #2c3e50;
+    --nav-text: #ffffff;
+    --shadow: rgba(0,0,0,0.1);
+}
+
+/* --- Variáveis do Tema Escuro --- */
+body.dark-mode {
+    --primary-color: #d752ff;      /* Vermelho mais claro para contraste */
+    --accent-color: #da7cff;
+    --bg-body: #121212;
+    --bg-panel: #1e1e1e;
+    --bg-input: #2d2d2d;
+    --text-main: #e0e0e0;
+    --text-muted: #aaaaaa;
+    --border-color: #444444;
+    --nav-bg: #000000;
+    --nav-text: #e0e0e0;
+    --shadow: rgba(0,0,0,0.5);
+}
+
+/* --- Reset & Base --- */
+* { box-sizing: border-box; margin: 0; padding: 0; outline: none; transition: background-color 0.7s, color 0.3s; }
+
+body{
+    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    font-size: 16px;
+    padding-bottom: 50px;
+}
+
+/* --- Navbar --- */
+.navbar{
+    background-color: var(--nav-bg);
+    color: var(--nav-text);
+    padding: 10px 5%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky; top: 0; z-index: 1000;
+    box-shadow: 0 2px 5px var(--shadow);
+}
+.nav-brand { font-weight: bold; font-size: 1.2rem; }
+.nav-menu { display: flex; align-items: center; gap: 10px; }
+
+.btn-nav, .btn-icon {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--nav-text);
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.btn-nav:hover, .btn-icon:hover { background-color: rgba(255,255,255,0.2); }
+
+/* --- Layout --- */
+.container { max-width: 1100px; margin: 20px auto; padding: 0 15px; display: flex; flex-direction: column; gap: 20px; }
+
+.painel {
+    background: var(--bg-panel);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--shadow);
+    border-top: 3px solid var(--primary-color);
+}
+
+h2 { color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 5px; margin-bottom: 15px; }
+
+/* --- Inputs --- */
+input, textarea {
+    width: 100%; padding: 8px;
+    background: var(--bg-input);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+label { font-weight: bold; font-size: 0.9rem; color: var(--text-muted); display: block; margin-bottom: 5px; }
+.hidden { display: none; }
+
+/* --- Grids --- */
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+
+.atributos-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+@media (max-width: 768px) { .atributos-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 480px) { .atributos-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.atributo-box {
+    background: var(--bg-body); border: 1px solid var(--border-color);
+    border-radius: 6px; padding: 10px;
+    display: flex; flex-direction: column; align-items: center;
+}
+.atributo-nome { font-weight: bold; color: var(--text-muted); }
+.atributo-valor { text-align: center; font-size: 1.2rem; font-weight: bold; border-color: var(--primary-color); width: 60px; }
+.atributo-mod { font-weight: bold; margin-top: 5px; }
+
+/* --- Status e Perícias --- */
+.status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+.status-box { background: var(--bg-body); padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; text-align: center; }
+.status-value { display: flex; align-items: center; gap: 5px; justify-content: center; }
+.status-value input { text-align: center; font-weight: bold; }
+
+.pericias-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+.pericia-item {
+    display: flex; align-items: center; padding: 8px;
+    background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 4px;
+}
+.pericia-nome { flex-grow: 1; font-size: 0.9rem; margin-left: 10px; }
+.pericia-bonus { font-weight: bold; color: var(--primary-color); }
+
+.grid-duplo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 700px) { .grid-duplo { grid-template-columns: 1fr; } }
+.tibares { margin-top: 10px; display: flex; align-items: center; gap: 10px; }

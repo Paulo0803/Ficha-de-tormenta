@@ -9,9 +9,12 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-icon">🟣</div>
+        <div class="nav-icon">Ficha T20 J.A. 🎲🟣</div>
 
         <div class="nav-menu">
+            <button class="btn-icon" id="btn-tema" title="Alternar Tema Claro/Escuro">
+                <span class="material-icons">dark_mode</span>
+            </button>
             <button class="btn-nav" onclick="limpar-ficha">➕ Nova ficha</button>
             <button class="btn-nav" onclick="document.getElementById('input-carregar').click()">💽 Carregar Ficha</button>
             <input type="file" id="input-carregar" class="hidden" accept=".json" onchange="carregarFicha(this)">
@@ -80,19 +83,21 @@
                 </div>
         </section>
 
-        <section class="painel">
-            <h2>Habilidaes & Poderes</h2>
-            <textarea placeholder="Anote suas habilidades e poderes de classe aqui..." id="habilidades"></textarea>
-        </section>
-
-        <section class="painel">
-                <h2>Inventário</h2>
-                <textarea id="inventario" placeholder="Equipamentos..."></textarea>
-                <div class="tibares">
-                    <label>T$:</label>
-                    <input type="number" id="tibar" placeholder="Tibares com você">
-                </div>
+        <div class="grid-duplo">
+            <section class="painel">
+                <h2>Habilidaes & Poderes</h2>
+                <textarea placeholder="Anote suas habilidades e poderes de classe aqui..." id="habilidades"></textarea>
             </section>
+    
+            <section class="painel">
+                    <h2>Inventário</h2>
+                    <textarea id="inventario" placeholder="Equipamentos..."></textarea>
+                    <div class="tibares">
+                        <label>T$:</label>
+                        <input type="number" id="tibar" placeholder="Tibares com você">
+                    </div>
+            </section>
+        </div>
     </div>
 
     <script src="script_result.js"></script>
