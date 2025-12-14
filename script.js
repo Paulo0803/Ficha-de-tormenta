@@ -66,6 +66,10 @@ function gerarPericiasHTML() {
         <div class="pericia-item">
             <input type="checkbox" id="treino-${idSafe}" onchange="atualizarPericia('${idSafe}', '${p.attr}')">
             <span class="pericia-nome">${p.nome} <small>(${p.attr.toUpperCase()})</small></span>
+            
+            <input type="number" id="bonus-${idSafe}" class="pericia-bonus-manual" value="0" 
+                   oninput="atualizarPericia('${idSafe}', '${p.attr}')" min="0"> 
+            
             <span class="pericia-bonus" id="valor-${idSafe}">+0</span>
         </div>`;
     });
@@ -98,8 +102,12 @@ function atualizarPericia(idPericia, attr) {
     const mod = Math.floor((valorAttr - 10) / 2);
     const checkbox = document.getElementById(`treino-${idPericia}`);
     const spanValor = document.getElementById(`valor-${idPericia}`);
+    
+    // NOVO: Pega o input de bônus manual pelo ID
+    const inputBonus = document.getElementById(`bonus-${idPericia}`); 
     const nivel = parseInt(document.getElementById('nivel').value) || 1;
     
+    // Bônus de Treino
     let bonusTreino = 0;
     if(checkbox && checkbox.checked) {
         if(nivel >= 15) bonusTreino = 6;
@@ -107,12 +115,18 @@ function atualizarPericia(idPericia, attr) {
         else bonusTreino = 2;
     }
 
+    // Valor do Bônus Manual: lê o valor do input (garante que é 0 se estiver vazio)
+    const bonusManual = inputBonus ? (parseInt(inputBonus.value) || 0) : 0;
+    
     const metadeNivel = Math.floor(nivel / 2);
-    const total = mod + bonusTreino + metadeNivel;
+    
+    // SOMA FINAL: Atributo + Treino + Nível + Manual
+    const total = mod + bonusTreino + metadeNivel + bonusManual; 
     
     if(spanValor) {
         spanValor.innerText = total >= 0 ? `+${total}` : total;
-        spanValor.style.opacity = (checkbox && checkbox.checked) ? '1' : '0.6';
+        // Opacidade 1 se treinado OU se houver bônus manual
+        spanValor.style.opacity = (checkbox && checkbox.checked) || bonusManual !== 0 ? '1' : '0.6';
     }
 }
 
@@ -130,7 +144,7 @@ function addArmor(nomeDesc = "", protecaoVal = ""){
     novoDiv.innerHTML = `
         <label>Armadura/Escudo ${contArmor}: <input type="text" class="input-nome" placeholder="Nome da armadura..."></label>
         <label>Proteção: <input type="text" class="input-protecao" placeholder="+Defesa"></label>
-        <button onclick="removerCampo(this)" class="btn-nav">-</button>
+        <button onclick="removerCampo(this)" class="btn-add">-</button>
     `;
     
     // Injeta valores se passados
@@ -152,7 +166,7 @@ function addArma(nomeDesc = "", danoVal = ""){
     novoDiv.innerHTML = `
         <label>Arma ${contArma}: <input type="text" class="input-nome" placeholder="Nome da arma..."></label>
         <label>Dano: <input type="text" class="input-dano" placeholder="Ex: 1d8, 2d6..."></label>
-        <button onclick="removerCampo(this)" class="btn-nav">-</button>
+        <button onclick="removerCampo(this)" class="btn-add">-</button>
     `;
 
     // Injeta valores se passados
