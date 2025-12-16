@@ -152,7 +152,7 @@ function addArmor(nome = "", prot = "", desc = ""){
     container.appendChild(div);
 }
 
-function addArma(nome = "", dano = "", desc = ""){
+function addArma(nome = "", dano = "", crt = "", tipo = "", alc = "", desc = ""){
     const container = document.getElementById('arma');
     const div = document.createElement('div');
     div.classList.add('painel', 'painel-child', 'item-dinamico-arma');
@@ -160,8 +160,11 @@ function addArma(nome = "", dano = "", desc = ""){
         <div class="item-dinamico-grid">
             <label>Arma: <input type="text" class="input-nome" value="${nome}"></label>
             <label>Dano: <input type="text" class="input-dano" value="${dano}"></label>
+            <label>Critico: <input type="text" class="input-crt" value="${crt}"></label>
+            <label>Tipo de dano: <input type="text" class="input-tipo" value="${tipo}"></label>
+            <label>Alcance: <input type="text" class="input-alc" value="${alc}"></label>
             <div class="input-full">
-                <textarea class="input-desc" placeholder="Crítico, Alcance, Tipo...">${desc}</textarea>
+                <textarea class="input-desc" placeholder="Descrição...">${desc}</textarea>
             </div>
         </div>
         <button onclick="removerCampo(this)" class="btn-add">- Remover</button>
@@ -233,6 +236,9 @@ function salvarFicha() {
     data.armas = Array.from(document.querySelectorAll('.item-dinamico-arma')).map(el => ({
         nome: el.querySelector('.input-nome').value,
         dano: el.querySelector('.input-dano').value,
+        crt: el.querySelector('.input-crt').value,
+        tipo: el.querySelector('.input-tipo').value,
+        alc: el.querySelector('.input-alc').value,
         desc: el.querySelector('.input-desc').value
     }));
 
@@ -275,7 +281,7 @@ function salvarNota() {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `${data['note-name'] || 'Notes'}_T20.json`;
+    a.download = `${data['note-name'] || 'Anotações'}_T20_Notes.json`;
     a.click();
 }
 
