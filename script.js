@@ -133,74 +133,132 @@ function atualizarPericia(idPericia, attr) {
     }
 }
 
-/* --- FUNÇÕES DO SISTEMA DINÂMICO --- */
-let contArmor = 0;
-const armorContainer = document.getElementById('armor');
+/* --- FUNÇÕES DE CRIAÇÃO DINÂMICA --- */
 
-function addArmor(nomeDesc = "", protecaoVal = ""){
-    if(!armorContainer) return;
-    contArmor++;
-    const novoDiv = document.createElement('div');
-    novoDiv.classList.add('painel', 'painel-child', 'item-dinamico-armor');
-    novoDiv.innerHTML = `
-        <label>Armadura/Escudo ${contArmor}: <input type="text" class="input-nome" placeholder="Nome da armadura..."></label>
-        <label>Proteção: <input type="text" class="input-protecao" placeholder="+Defesa"></label>
-        <button onclick="removerCampo(this)" class="btn-add">-</button>
+function addArmor(nome = "", prot = "", desc = ""){
+    const container = document.getElementById('armor');
+    const div = document.createElement('div');
+    div.classList.add('painel', 'painel-child', 'item-dinamico-armor');
+    div.innerHTML = `
+        <div class="item-dinamico-grid">
+            <label>Nome: <input type="text" class="input-nome" value="${nome}"></label>
+            <label>Defesa: <input type="text" class="input-protecao" value="${prot}"></label>
+            <div class="input-full">
+                <textarea class="input-desc" placeholder="Descrição/Penalidade...">${desc}</textarea>
+            </div>
+        </div>
+        <button onclick="removerCampo(this)" class="btn-add">- Remover</button>
     `;
-    novoDiv.querySelector('.input-nome').value = nomeDesc;
-    novoDiv.querySelector('.input-protecao').value = protecaoVal;
-    armorContainer.appendChild(novoDiv);
+    container.appendChild(div);
 }
 
-let contArma = 0;
-const armaContainer = document.getElementById('arma');
-
-function addArma(nomeDesc = "", danoVal = ""){
-    if(!armaContainer) return;
-    contArma++;
-    const novoDiv = document.createElement('div');
-    novoDiv.classList.add('painel', 'painel-child', 'item-dinamico-arma');
-    novoDiv.innerHTML = `
-        <label>Arma ${contArma}: <input type="text" class="input-nome" placeholder="Nome da arma..."></label>
-        <label>Dano: <input type="text" class="input-dano" placeholder="Ex: 1d8, 2d6..."></label>
-        <button onclick="removerCampo(this)" class="btn-add">-</button>
+function addArma(nome = "", dano = "", desc = ""){
+    const container = document.getElementById('arma');
+    const div = document.createElement('div');
+    div.classList.add('painel', 'painel-child', 'item-dinamico-arma');
+    div.innerHTML = `
+        <div class="item-dinamico-grid">
+            <label>Arma: <input type="text" class="input-nome" value="${nome}"></label>
+            <label>Dano: <input type="text" class="input-dano" value="${dano}"></label>
+            <div class="input-full">
+                <textarea class="input-desc" placeholder="Crítico, Alcance, Tipo...">${desc}</textarea>
+            </div>
+        </div>
+        <button onclick="removerCampo(this)" class="btn-add">- Remover</button>
     `;
-    novoDiv.querySelector('.input-nome').value = nomeDesc;
-    novoDiv.querySelector('.input-dano').value = danoVal;
-    armaContainer.appendChild(novoDiv);
+    container.appendChild(div);
 }
 
-function removerCampo(botaoRemover) {
-    botaoRemover.parentElement.remove();
+function addHabilidade(n="", ex="", alc="", area="", res="", dur="", desc=""){
+    const container = document.getElementById('lista-habilidades');
+    const div = document.createElement('div');
+    div.classList.add('painel', 'painel-child', 'item-dinamico-hab');
+    div.innerHTML = `
+        <div class="item-dinamico-grid">
+            <label>Nome: <input type="text" class="input-nome" value="${n}"></label>
+            <label>Execução: <input type="text" class="input-exec" value="${ex}"></label>
+            <label>Alcance: <input type="text" class="input-alc" value="${alc}"></label>
+            <label>Área: <input type="text" class="input-area" value="${area}"></label>
+            <label>Resistência: <input type="text" class="input-res" value="${res}"></label>
+            <label>Duração: <input type="text" class="input-dur" value="${dur}"></label>
+            <div class="input-full">
+                <textarea class="input-desc" placeholder="Efeito da habilidade...">${desc}</textarea>
+            </div>
+        </div>
+        <button onclick="removerCampo(this)" class="btn-add">- Remover</button>
+    `;
+    container.appendChild(div);
 }
 
-/* --- SALVAR E CARREGAR --- */
+function addInventario(n="", desc="", peso="", qtd=""){
+    const container = document.getElementById('lista-inventario');
+    const div = document.createElement('div');
+    div.classList.add('painel', 'painel-child', 'item-dinamico-inv');
+    div.innerHTML = `
+        <div class="item-dinamico-grid">
+            <label>Item: <input type="text" class="input-nome" value="${n}"></label>
+            <label>Qtd: <input type="number" class="input-qtd" value="${qtd}"></label>
+            <label>Peso: <input type="text" class="input-peso" value="${peso}"></label>
+            <div class="input-full">
+                <textarea class="input-desc" placeholder="Detalhes do item...">${desc}</textarea>
+            </div>
+        </div>
+        <button onclick="removerCampo(this)" class="btn-add">- Remover</button>
+    `;
+    container.appendChild(div);
+}
+
+function removerCampo(btn) { btn.parentElement.remove(); }
+
+/* --- SISTEMA DE SALVAMENTO ATUALIZADO --- */
+
 function salvarFicha() {
     const data = {};
-    const inputs = document.querySelectorAll('input[id], textarea[id]');
-    inputs.forEach(el => {
-        if(el.type === 'file') return;
-        data[el.id] = el.type === 'checkbox' ? el.checked : el.value;
-    });
-
-    data.listaArmaduras = [];
-    document.querySelectorAll('.item-dinamico-armor').forEach(div => {
-        const nome = div.querySelector('.input-nome').value;
-        const protecao = div.querySelector('.input-protecao').value;
-        data.listaArmaduras.push({ nome, protecao });
-    });
-
-    data.listaArmas = [];
-    document.querySelectorAll('.item-dinamico-arma').forEach(div => {
-        const nome = div.querySelector('.input-nome').value;
-        const dano = div.querySelector('.input-dano').value;
-        data.listaArmas.push({ nome, dano });
-    });
     
+    // Salva todos os inputs normais (ID: valor)
+    document.querySelectorAll('input[id], textarea[id]').forEach(el => {
+        if(el.type !== 'file') {
+            data[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+        }
+    });
+
+    // Coletar Armaduras
+    data.armaduras = Array.from(document.querySelectorAll('.item-dinamico-armor')).map(el => ({
+        nome: el.querySelector('.input-nome').value,
+        prot: el.querySelector('.input-protecao').value,
+        desc: el.querySelector('.input-desc').value
+    }));
+
+    // Coletar Armas
+    data.armas = Array.from(document.querySelectorAll('.item-dinamico-arma')).map(el => ({
+        nome: el.querySelector('.input-nome').value,
+        dano: el.querySelector('.input-dano').value,
+        desc: el.querySelector('.input-desc').value
+    }));
+
+    // Coletar Habilidades
+    data.habilidades = Array.from(document.querySelectorAll('.item-dinamico-hab')).map(el => ({
+        nome: el.querySelector('.input-nome').value,
+        exec: el.querySelector('.input-exec').value,
+        alc: el.querySelector('.input-alc').value,
+        area: el.querySelector('.input-area').value,
+        res: el.querySelector('.input-res').value,
+        dur: el.querySelector('.input-dur').value,
+        desc: el.querySelector('.input-desc').value
+    }));
+
+    // Coletar Inventário
+    data.inventario = Array.from(document.querySelectorAll('.item-dinamico-inv')).map(el => ({
+        nome: el.querySelector('.input-nome').value,
+        qtd: el.querySelector('.input-qtd').value,
+        peso: el.querySelector('.input-peso').value,
+        desc: el.querySelector('.input-desc').value
+    }));
+
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `${document.getElementById('n-personagem').value || 'Personagem'}_T20.json`;
+    a.download = `${data['n-personagem'] || 'Ficha'}_T20.json`;
     a.click();
 }
 
@@ -211,32 +269,34 @@ function carregarFicha(input) {
     reader.onload = function(e) {
         try {
             const data = JSON.parse(e.target.result);
-            for (const key in data) {
-                if(key === 'listaArmaduras' || key === 'listaArmas') continue;
+            
+            // Limpa campos dinâmicos existentes
+            document.querySelectorAll('.item-dinamico-armor, .item-dinamico-arma, .item-dinamico-hab, .item-dinamico-inv').forEach(el => el.remove());
+
+            // Preenche campos fixos
+            for (let key in data) {
                 const el = document.getElementById(key);
                 if (el) {
                     if (el.type === 'checkbox') el.checked = data[key];
                     else el.value = data[key];
                 }
             }
-            // Limpa e recarrega dinâmicos
-            if(document.querySelector('.item-dinamico-armor')) limparDinamicos('.item-dinamico-armor');
-            if(data.listaArmaduras && Array.isArray(data.listaArmaduras)){
-                data.listaArmaduras.forEach(item => addArmor(item.nome, item.protecao));
-            }
-            if(document.querySelector('.item-dinamico-arma')) limparDinamicos('.item-dinamico-arma');
-            if(data.listaArmas && Array.isArray(data.listaArmas)){
-                data.listaArmas.forEach(item => addArma(item.nome, item.dano));
-            }
+
+            // Recria itens dinâmicos
+            if(data.armaduras) data.armaduras.forEach(x => addArmor(x.nome, x.prot, x.desc));
+            if(data.armas) data.armas.forEach(x => addArma(x.nome, x.dano, x.desc));
+            if(data.habilidades) data.habilidades.forEach(x => addHabilidade(x.nome, x.exec, x.alc, x.area, x.res, x.dur, x.desc));
+            if(data.inventario) data.inventario.forEach(x => addInventario(x.nome, x.desc, x.peso, x.qtd));
+
             calcularMods();
             alert("Ficha carregada com sucesso!");
-        } catch(err) { 
+        } catch(err) {
             console.error(err);
-            alert("Erro ao ler arquivo ou arquivo inválido."); 
+            alert("Erro ao carregar o arquivo JSON.");
         }
     };
     reader.readAsText(file);
-    input.value = ''; 
+    input.value = '';
 }
 
 function limparDinamicos(selector) {

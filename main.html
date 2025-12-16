@@ -87,13 +87,28 @@
 
         <section id="armor" class="painel">
             <h2>Armaduras e Escudos</h2>
-            <button class="btn-add" onclick="addArmor()">+</button>
+            <button class="btn-add" onclick="addArmor()">+ Adicionar Armadura/Escudo</button>
         </section>
-
 
         <section id="arma" class="painel">
             <h2>Armas</h2>
-            <button class="btn-add" onclick="addArma()">+</button>
+            <button class="btn-add" onclick="addArma()">+ Adicionar Arma</button>
+        </section>
+
+        <section id="habilidades-container" class="painel">
+            <h2>Habilidades & Poderes</h2>
+            <button class="btn-add" onclick="addHabilidade()">+ Adicionar Habilidade</button>
+            <div id="lista-habilidades"></div>
+        </section>
+
+        <section id="inventario-container" class="painel">
+            <h2>Inventário (Itens Gerais)</h2>
+            <button class="btn-add" onclick="addInventario()">+ Adicionar Item</button>
+            <div id="lista-inventario"></div>
+            <div class="tibares" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                <label>Dinheiro (T$):</label>
+                <input type="number" id="tibar" placeholder="Ex: 100">
+            </div>
         </section>
 
         <section class="painel">
@@ -101,23 +116,6 @@
             <div class="pericias-lista" id="lista-pericias">
                 </div>
         </section>
-
-        <div class="grid-duplo">
-            <section class="painel">
-                <h2>Habilidaes & Poderes</h2>
-                <textarea placeholder="Anote suas habilidades e poderes de classe aqui..." id="habilidades"></textarea>
-            </section>
-    
-            <section class="painel">
-                    <h2>Inventário</h2>
-                    <textarea id="inventario" placeholder="Equipamentos..."></textarea>
-                    <div class="tibares">
-                        <label>T$:</label>
-                        <input type="number" id="tibar" placeholder="Tibares com você">
-                    </div>
-            </section>
-        </div>
-    </div>
 
     <script src="script.js"></script>
 </body>
