@@ -392,3 +392,12 @@ textarea.input-desc {
     resize: vertical;
     font-family: inherit;
 }
+
+.notes {
+    padding: 20px;
+    justify-content: center;
+}
+
+#note-name{
+    margin-bottom: 10px;
+}

@@ -262,6 +262,63 @@ function salvarFicha() {
     a.click();
 }
 
+function salvarNota() {
+    const data = {};
+    
+    // Salva todos os inputs normais (ID: valor)
+    document.querySelectorAll('input[id], textarea[id]').forEach(el => {
+        if(el.type !== 'file') {
+            data[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+        }
+    });
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `${data['note-name'] || 'Notes'}_T20.json`;
+    a.click();
+}
+
+function carregarNota(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+            
+            for (let key in data) {
+                const el = document.getElementById(key);
+                if (el) {
+                    if (el.type === 'checkbox') el.checked = data[key];
+                    else el.value = data[key];
+                }
+            }
+
+            calcularMods();
+            alert("Nota carregada com sucesso!");
+        } catch(err) {
+            console.error(err);
+            alert("Erro ao carregar o arquivo JSON.");
+        }
+    };
+    reader.readAsText(file);
+    input.value = '';
+}
+
+function limparNota() {
+    if(confirm("Deseja limpar nota atual?")) {
+        document.querySelectorAll('input').forEach(i => {
+            if(i.type !== 'file') {
+                if(i.type === 'number') i.value = i.defaultValue || 0;
+                else if(i.type === 'checkbox') i.checked = false;
+                else i.value = "";
+            }
+        document.querySelectorAll('textarea').forEach(t => t.value = "");
+        });
+    }
+}
+
 function carregarFicha(input) {
     const file = input.files[0];
     if (!file) return;
