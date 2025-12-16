@@ -14,7 +14,7 @@ const periciasDB = [
     { nome: "Percepção", attr: "sab" }, { nome: "Pilotagem", attr: "des" },
     { nome: "Pontaria", attr: "des" }, { nome: "Reflexos", attr: "des" },
     { nome: "Religião", attr: "sab" }, { nome: "Sobrevivência", attr: "sab" },
-    { nome: "Vontade", attr: "sab" }
+    { nome: "Vontade", attr: "sab" }, { nome: "Terapia", attr: "sab" }
 ];
 
 /* --- INICIALIZAÇÃO --- */
