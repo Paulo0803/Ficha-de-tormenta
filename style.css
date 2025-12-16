@@ -45,31 +45,77 @@ body{
 }
 
 /* --- Navbar --- */
-.navbar{
+.navbar {
     background-color: var(--nav-bg);
     color: var(--nav-text);
-    padding: 10px 5%;
+    padding: 10px 30px; /* Aumentei o espaço nas laterais */
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-between; /* A MÁGICA: Empurra o logo para a esq. e o menu para a dir. */
     align-items: center;
-    position: sticky; top: 0; z-index: 1000;
-    box-shadow: 0 2px 5px var(--shadow);
+    box-shadow: 0 2px 10px var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
-.nav-brand { font-weight: bold; font-size: 1.2rem; }
-.nav-menu { display: flex; align-items: center; gap: 10px; }
 
-.btn-nav, .btn-icon {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
+.nav-icon img {
+    display: block; /* Remove espaços estranhos abaixo da imagem */
+    transition: transform 0.3s;
+}
+
+.nav-icon img:hover {
+    transform: scale(1.1);
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espaço entre cada botão */
+}
+
+/* --- BOTÕES DA NAV --- */
+.btn-nav {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: var(--nav-text);
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: 8px 15px;
+    border-radius: 5px;
     cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9em;
+    transition: all 0.2s ease;
+    text-decoration: none; /* Importante para o link <a> parecer botão */
+    display: inline-block;
 }
 
-.btn-nav:hover, .btn-icon:hover { background-color: rgba(255,255,255,0.2); }
+.btn-nav:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+/* --- BOTÃO DE TEMA (O Sol/Lua) --- */
+#btn-tema {
+    background: transparent;
+    border: none;
+    color: var(--nav-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.3s;
+    
+    /* Cria uma linha divisória à direita do ícone de tema para separá-lo do menu */
+    margin-right: 10px;
+    border-right: 1px solid rgba(255,255,255,0.2); 
+    padding-right: 20px;
+    border-radius: 0; /* Remove arredondamento para a borda ficar reta */
+}
+
+#btn-tema:hover {
+    background: rgba(255,255,255,0.1);
+    border-radius: 5px; /* Volta a arredondar no hover */
+}
 
 /* --- Layout --- */
 .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; display: flex; flex-direction: column; gap: 20px; }
@@ -229,3 +275,96 @@ label { font-weight: bold; font-size: 0.9rem; color: var(--text-muted); display:
 .grid-duplo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 @media (max-width: 700px) { .grid-duplo { grid-template-columns: 1fr; } }
 .tibares { margin-top: 10px; display: flex; align-items: center; gap: 10px; }
+
+/* --- ESTILOS ESPECÍFICOS: PÁGINA DE INFORMAÇÕES (Sanidade) --- */
+.conteudo-texto {
+    line-height: 1.8;
+    color: var(--text-main);
+}
+
+.conteudo-texto h1 {
+    color: var(--primary-color);
+    text-align: center;
+    border-bottom: 3px double var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+.conteudo-texto h3 {
+    margin-top: 25px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Tabelas */
+.tabela-infos {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.95em;
+    background: var(--bg-panel);
+}
+
+.tabela-infos th {
+    background-color: var(--nav-bg);
+    color: var(--nav-text);
+    text-align: left;
+    padding: 12px;
+}
+
+.tabela-infos td {
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
+}
+
+/* Caixas de Destaque (Adaptadas para Dark Mode) */
+.example-box, .talent-box, .stage-box {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 6px;
+    border-left-width: 5px;
+    border-left-style: solid;
+}
+
+/* Exemplo (Azul) */
+.example-box {
+    background-color: rgba(52, 152, 219, 0.1); /* Transparente para funcionar no dark */
+    border-left-color: #3498db;
+}
+
+/* Talento (Laranja) */
+.talent-box {
+    background-color: rgba(230, 126, 34, 0.1);
+    border: 1px dashed #e67e22;
+    border-left: 5px solid #e67e22; /* Mantém consistência visual */
+}
+
+/* Estágios de Sanidade */
+.stage-1 { 
+    border-left-color: #f1c40f; 
+    background: rgba(241, 196, 15, 0.1); 
+}
+.stage-2 { 
+    border-left-color: #e67e22; 
+    background: rgba(230, 126, 34, 0.1); 
+}
+.stage-3 { 
+    border-left-color: #c0392b; 
+    background: rgba(192, 57, 43, 0.1); 
+}
+
+.highlight {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+footer {
+    text-align: center;
+    font-size: 0.8em;
+    margin-top: 40px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
